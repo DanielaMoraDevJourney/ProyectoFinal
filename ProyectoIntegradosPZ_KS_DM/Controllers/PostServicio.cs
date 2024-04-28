@@ -34,8 +34,8 @@ namespace ProyectoIntegradosPZ_KS_DM.Controllers
                                 PostId = (int)reader["PostId"],
                                 Titulo = (string)reader["Titulo"],
                                 Contenido = (string)reader["Contenido"],
-                                FechaCreacion = (DateTime)reader["FechaCreacion"]
-                                Categoria = (CategoriaEnum)Enum.Parse(typeof(CategoriaEnum),(string) reader ["Categoria"]
+                                FechaCreacion = (DateTime)reader["FechaCreacion"],
+                                Categoria = (CategoriaEnum)Enum.Parse(typeof(CategoriaEnum),(string) reader ["Categoria"])
                                 
 
 
@@ -66,7 +66,7 @@ namespace ProyectoIntegradosPZ_KS_DM.Controllers
                                 Titulo = (string)reader["Titulo"],
                                 Contenido = (string)reader["Contenido"],
                                 FechaCreacion = (DateTime)reader["FechaCreacion"],
-                                Categoria = (CategoriaEnum)Enum.Parse(typeof(CategoriaEnum), (string)reader["Categoria"]
+                                Categoria = (CategoriaEnum)Enum.Parse(typeof(CategoriaEnum), (string)reader["Categoria"])
 
                             };
                             posts.Add(post);
@@ -208,7 +208,7 @@ namespace ProyectoIntegradosPZ_KS_DM.Controllers
             return comments;
         }
 
-
+        //
 
     }
 }
