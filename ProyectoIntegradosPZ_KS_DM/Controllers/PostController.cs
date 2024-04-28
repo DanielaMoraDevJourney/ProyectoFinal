@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Data;
 using ProyectoIntegradosPZ_KS_DM.Models.ViewModels;
 using System.Linq.Expressions;
+using ProyectoIntegradosPZ_KS_DM.Data.Servicios;
 
 namespace ProyectoIntegradosPZ_KS_DM.Controllers
 {
