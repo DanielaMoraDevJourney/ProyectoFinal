@@ -57,6 +57,7 @@ namespace ProyectoIntegradosPZ_KS_DM.Data.Servicios
                 connection.Open();
                 using (SqlCommand cmd = new("ObtenerTodosLosPosts", connection))
                 {
+                    //hi
                     cmd.CommandType = CommandType.StoredProcedure;
                     using (var reader = cmd.ExecuteReader())
                     {
