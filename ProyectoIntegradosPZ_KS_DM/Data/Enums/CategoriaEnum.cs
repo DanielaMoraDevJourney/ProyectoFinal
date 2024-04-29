@@ -2,7 +2,7 @@
 
 namespace ProyectoIntegradosPZ_KS_DM.Data.Enums
 {
-    public class CategoriaEnum
+    public enum CategoriaEnum
     {
         [Description("Noticias recientes")]
         Noticias,
@@ -14,11 +14,5 @@ namespace ProyectoIntegradosPZ_KS_DM.Data.Enums
         Recursos,
         [Description("Recursos de aprendizaje")]
         Tutoriales
-
-
-
-
-
-
     }
 }

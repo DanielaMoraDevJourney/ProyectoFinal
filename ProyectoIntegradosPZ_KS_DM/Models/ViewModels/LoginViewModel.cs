@@ -10,7 +10,7 @@ namespace ProyectoIntegradosPZ_KS_DM.Models.ViewModels
         public string? Correo { get; set; }
 
         [DataType(DataType.Password)]
-        public string? Contraseña { get; set; }
+        public string? Contrasenia { get; set; }
 
         [DisplayName("Mantener sesion activa.")]
         public bool MantenerActivo { get; set; }

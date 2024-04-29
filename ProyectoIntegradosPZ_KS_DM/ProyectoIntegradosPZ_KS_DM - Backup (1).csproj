@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Views\Cuenta\NewFile.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="..\..\..\..\AppData\Local\Temp\w0bw5xm0..sql" Link="w0bw5xm0..sql" />
   </ItemGroup>
 

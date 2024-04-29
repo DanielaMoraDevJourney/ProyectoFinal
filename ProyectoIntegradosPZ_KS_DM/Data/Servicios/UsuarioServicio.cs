@@ -29,8 +29,12 @@ namespace ProyectoIntegradosPZ_KS_DM.Data.Servicios
                     cmd.ExecuteNonQuery();
                     con.Close();
 
-                    //INSERTAR ENVÍO DE CORREO
+
+                    Email email = new();
+                    if (correo != null)
+                        email.Enviar(correo, token.ToString());
                 }
+                
             }
             
         }
@@ -61,6 +65,70 @@ namespace ProyectoIntegradosPZ_KS_DM.Data.Servicios
         }
 
 
+        public List<Usuario> ListarUsuarios()
+        {
+            var usuarios = new List<Usuario>();
+            using (SqlConnection con = new(_contextoPZ_KS_DM.Conexion))
+            {
+                using (SqlCommand cmd = new("ListarUsuarios", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure; 
+                    con.Open();
+                    SqlDataReader rdr = cmd.ExecuteReader(); 
+                    while (rdr.Read())
+                    {
+                        var usuario = new Usuario
+                        {
+                            UsuarioId = (int)rdr["UsuarioId"],
+                            Nombre = rdr["Nombre"].ToString(),
+                            Apellido= rdr["Apellido"].ToString(),
+                            Correo = rdr["Correo"].ToString(),
+                            Contrasenia = rdr["Contrasenia"].ToString(),
+                            RolId = (int)rdr["RolId"],
+                            NombreUsuario = rdr["NombreUsuario"].ToString(),
+                            Estado = Convert.ToBoolean(rdr["Estado"]),
+                            Token = rdr["Token"].ToString(),
+                            FechaExpiracion = Convert.ToDateTime(rdr["FechaExpiracion"])
+                        };
+                        
+
+                    usuarios.Add(usuario);
+                    }
+                }
+            }
+            return usuarios;
+        }
+
+        public Usuario ObtenerUsuarioPorId(int id)
+        {
+            Usuario usuario = new();
+            using (SqlConnection con = new(_contextoPZ_KS_DM.Conexion))
+            {
+                using (SqlCommand cmd = new("ObtenerUsuarioPorId", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@usuarioId", id);
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    if (rdr.Read())
+                    {
+                        usuario = new Usuario
+                        {
+                            UsuarioId = id,
+                            Nombre = rdr["Nombre"].ToString(),
+                            Apellido = rdr["Apellido"].ToString(),
+                            Correo = rdr["Correo"].ToString(),
+                            Contrasenia = rdr["Contraseña"].ToString(),
+                            RolId = (int)rdr["RolId"],
+                            NombreUsuario = rdr["NombreUsuario"].ToString(),
+                            Estado = Convert.ToBoolean(rdr["Estado"]),
+                            Token = rdr["Token"].ToString(),
+                            FechaExpiracion = Convert.ToDateTime(rdr["FechaExpiracion"])
+                        };
+                    }
+                }
+            }
+            return usuario;
+        }
 
 
     }

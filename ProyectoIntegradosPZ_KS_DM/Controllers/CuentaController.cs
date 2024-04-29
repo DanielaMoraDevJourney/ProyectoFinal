@@ -1,5 +1,6 @@
-﻿T
+﻿
 
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -63,7 +64,11 @@ namespace ProyectoIntegradosPZ_KS_DM.Controllers
 
                             command.ExecuteNonQuery();
 
-                            //PENDIENTE PROGRAMAR ENVIO CORREO
+                            Email email = new();
+                            if (model.Correo != null)
+                                email.Enviar(model.Correo, token.ToString());
+
+
                         }
                     }
                     return RedirectToAction("Token");
@@ -160,7 +165,7 @@ namespace ProyectoIntegradosPZ_KS_DM.Controllers
                             {
                                 if (dr.Read())
                                 {
-                                    bool passwordMatch = BCrypt.Net.BCrypt.Verify(model.Contraseña, dr["Contrasenia"].ToString());
+                                    bool passwordMatch = BCrypt.Net.BCrypt.Verify(model.Contrasenia, dr["Contrasenia"].ToString());
                                     if (passwordMatch)
                                     {
                                         DateTime fechaExpiracion = DateTime.UtcNow;
@@ -171,7 +176,7 @@ namespace ProyectoIntegradosPZ_KS_DM.Controllers
                                             ViewBag.Error = "Su cuenta no ha sido activada, se ha reenviado un correo de activación";
                                         }
 
-                                        
+
                                     }
                                     else if (!(bool)dr["Estado"])
                                         ViewBag.Error = "Su cuenta no ha sido activada, verifique su bandeja";
@@ -181,38 +186,59 @@ namespace ProyectoIntegradosPZ_KS_DM.Controllers
                                         int idUsuario = (int)dr["UsuarioId"];
                                         if (nombreusuario != null)
                                         {
-                                            var claims = new List<string>();
+                                            var claims = new List<Claim>();
                                             {
                                                 new Claim(ClaimTypes.NameIdentifier, nombreusuario);
-                                                //new Claim(ClaimTypes.NameIdentifier, nombreusuario),
                                                 new Claim("IdUsuario", idUsuario.ToString());
                                             };
                                             int rolId = (int)dr["RolId"];
                                             string rolNombre = rolId == 1 ? "Administrador" : "Usuario";
                                             claims.Add(new Claim(ClaimTypes.Role, rolNombre));
                                             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                                            var propiedades = new AuthenticationProperties
+                                            {
+                                                AllowRefresh = true,
+                                                IsPersistent = model.MantenerActivo,
+                                                ExpiresUtc = DateTimeOffset.UtcNow.Add(model.MantenerActivo ? TimeSpan.FromDays(1) : TimeSpan.FromMinutes(3))
+                                            };
+                                            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity), propiedades);
+                                            return RedirectToAction("Index", "Home");
                                         }
-
                                     }
                                 }
+                                else
+                                    ViewBag.Error = "Correo no registrado";
+                                    dr.Close(); 
                             }
+
+
                         }
-                        catch (System.Exception)
+
+                        finally                        
                         {
-                            throw;
+                            if (cmd != null)
+                            {
+                                cmd.Dispose();
+                            }
                         }
                     }
                 }
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                throw;
+                ViewBag.Error= ex.Message;
             }
+            return View(model);
         }
 
+        public async Task<IActionResult> CerrarSesion() 
+        { 
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
+        }
+     }
+ }
 
-    }
 
 
-}
 

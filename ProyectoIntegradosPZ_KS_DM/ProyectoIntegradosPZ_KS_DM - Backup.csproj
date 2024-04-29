@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Views\Cuenta\NewFile.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="..\..\..\..\AppData\Local\Temp\w0bw5xm0..sql" Link="w0bw5xm0..sql" />
   </ItemGroup>
 
@@ -19,6 +15,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.4" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="9.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Cuenta\" />
   </ItemGroup>
 
 </Project>

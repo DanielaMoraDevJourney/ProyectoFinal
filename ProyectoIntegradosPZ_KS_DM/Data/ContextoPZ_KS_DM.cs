@@ -1,6 +1,7 @@
-﻿namespace ProyectoIntegradosPZ_KS_DM.Data
+﻿
+namespace ProyectoIntegradosPZ_KS_DM.Data
 {
-    public class ContextoPZ_KS_DM
+    public class ContextoPZ_KS_DM 
     {
         public string? Conexion { get; }
 
